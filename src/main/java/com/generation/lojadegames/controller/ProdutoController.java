@@ -2,6 +2,8 @@ package com.generation.lojadegames.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,22 +41,22 @@ public class ProdutoController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	@GetMapping("/name/{name}")
-	public ResponseEntity<List<ProdutoModel>> getByName(@PathVariable String name){
-		return ResponseEntity.ok(repository.findAllByNameContainingIgnoreCase(name));
+	@GetMapping("/nome/{nome}")
+	public ResponseEntity<List<ProdutoModel>> getByNome(@PathVariable String nome){
+		return ResponseEntity.ok(repository.findAllByNomeContainingIgnoreCase(nome));
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProdutoModel> post(@RequestBody ProdutoModel product){
+	public ResponseEntity<ProdutoModel> post(@Valid @RequestBody ProdutoModel produtoModel){
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(product));
+		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(produtoModel));
 		
 	}
 	
 	@PutMapping
-	public ResponseEntity<ProdutoModel> put(@RequestBody ProdutoModel product){
+	public ResponseEntity<ProdutoModel> put(@Valid @RequestBody ProdutoModel produtoModel){
 		
-		return ResponseEntity.ok(repository.save(product));
+		return ResponseEntity.ok(repository.save(produtoModel));
 		
 	}
 	

@@ -1,14 +1,20 @@
 package com.generation.lojadegames.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -17,9 +23,9 @@ public class ProdutoModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
-	@NotBlank
+	/** @NotBlank
 	@Size(min = 4, max = 255)
 	private String name;
 	
@@ -32,6 +38,30 @@ public class ProdutoModel {
 	private String console;
 	
 	private long quantity;
+	**/
+	
+	@NotNull(message = "Nome é obrigatório!")                                       										
+	private String nome;
+	
+	@Size(max=500)
+	private String descricao;
+	
+	@NotNull(message = "Console é obrigatório!")
+	private String console;
+	
+	private int quantidade;
+	
+	@Column(name = "data_lancamento")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataLancamento;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	@NotNull(message = "Preço é obrigatório!")
+	@Positive(message = "O preço deve ser maior do que zero!")
+	private BigDecimal preco;
+	
+	private String foto;
+	
 	
 	@ManyToOne //relação chave estrangeira
 	@JsonIgnoreProperties("produto") // ignora. Não escreve o produto 2x
@@ -45,20 +75,20 @@ public class ProdutoModel {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getDescription() {
-		return description;
+		return descricao;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescription(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public String getConsole() {
@@ -70,11 +100,11 @@ public class ProdutoModel {
 	}
 
 	public long getQuantity() {
-		return quantity;
+		return quantidade;
 	}
 
-	public void setQuantity(Long quantity) {
-		this.quantity = quantity;
+	public void setQuantity(int quantidade) {
+		this.quantidade = quantidade;
 	}
 
 	public CategoriaModel getCategoria() {
